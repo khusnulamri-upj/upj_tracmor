@@ -40,6 +40,13 @@
 			// Hide login controls if logins are disabled for this site
 			if (QApplication::$TracmorSettings->DisableLogins)
 			  $this->txtUsername->Display = $this->txtPassword->Display = $this->btnLogin->Display = false;
+                        
+                        //--AMR20140115
+                        $isLoggedIn = QApplication::isLoggedIn();
+                        if ($isLoggedIn) {
+                            Qapplication::Redirect('./'.$isLoggedIn.'/');
+                        }
+                        //--AMR20140115--
 		}
 
 		protected function txtUsername_Create() {

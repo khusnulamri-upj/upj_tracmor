@@ -92,6 +92,25 @@
 			
 			QApplication::$TracmorSettings = new TracmorSettings();
 		}
+                
+                //--AMR20140116
+                
+                /**
+		 * Untuk mengetahui user sedang login atau tidak di halaman login
+                 * 
+		 */
+                public static function isLoggedIn() {
+                    if (array_key_exists('intUserAccountId', $_SESSION)) {
+                        $objUserAccount = UserAccount::Load($_SESSION['intUserAccountId']);
+                        if ($objUserAccount) {
+                            // Assign the UserAccount object to the globally available QApplication
+                            QApplication::$objUserAccount = $objUserAccount;
+                            return RoleModule::GetFirstModuleNameByRoleId($objUserAccount->RoleId);
+                        }
+                    }
+                    return false;
+                }
+                //--AMR20140116--
 		
 		// Assign the UserAccountId to a session variable
 		public static function Login(UserAccount $objUserAccount) {
@@ -100,7 +119,7 @@
 			$_SESSION['intUserAccountId'] = $objUserAccount->UserAccountId;
 		}
 		
-		// Destroy the user session and redirect the user to the login page
+                // Destroy the user session and redirect the user to the login page
 		public static function Logout() {
 			QFileFormStateHandler::DeleteFormStateForSession();
 			unset($_SESSION['intUserAccountId']);

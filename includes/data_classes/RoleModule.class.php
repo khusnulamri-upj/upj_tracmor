@@ -49,6 +49,34 @@
 			return sprintf('RoleModule Object %s',  $this->intRoleModuleId);
 		}
 		
+                //--AMR20140115
+                /**
+                 * Ambil modul pertama yang bisa diakses oleh role
+                 * dari user yang login
+                 * @param integer $intRoleId Role ID
+                 * @return string Short description dari modul
+                 */
+                public static function GetFirstModuleNameByRoleId($intRoleId) {
+                    // Call to ArrayQueryHelper to Get Database Object and Get SQL Clauses
+                    RoleModule::QueryHelper($objDatabase);
+
+                    // Properly Escape All Input Parameters using Database->SqlVariable()
+                    $intRoleId = $objDatabase->SqlVariable($intRoleId);
+
+                    // Setup the SQL Query
+                    $strQuery = sprintf('SELECT
+                        r.`module_id`,
+                        m.`short_description`
+                        FROM `role_module` r LEFT OUTER JOIN `module` m ON r.`module_id` = m.`module_id`
+                        WHERE `role_id` = %s ORDER BY r.`module_id` ASC', $intRoleId);
+
+                    // Perform the Query and Instantiate the Row
+                    $objDbResult = $objDatabase->Query($strQuery);
+                    $arrRowDbResult = $objDbResult->FetchRow();
+                    return $arrRowDbResult[1];
+                }
+                //--AMR20140115--
+                
 		/**
 		 * Load a RoleModule from PK Info
 		 * @param integer $intRoleId

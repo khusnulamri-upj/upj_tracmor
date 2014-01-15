@@ -469,7 +469,21 @@
 
 		protected static function InitializePhpSession() {
 			// Go ahead and start the PHP session if we have set EnableSession to true
-			if (QApplication::$EnableSession) session_start();
+			if (QApplication::$EnableSession) {
+                            session_start();
+                            //--AMR20140115
+                            $timeout_in_second = 300;
+                            if (!isset($_SESSION['LAST_ACTIVITY'])) {
+                                $_SESSION['LAST_ACTIVITY'] = time();
+                            } else if (time() - $_SESSION['LAST_ACTIVITY'] < $timeout_in_second) {
+                                session_regenerate_id(true);    // change session ID for the current session an invalidate old session ID
+                                $_SESSION['LAST_ACTIVITY'] = time();  // update creation time
+                            } else if (time() - $_SESSION['LAST_ACTIVITY'] > $timeout_in_second) {
+                                session_unset();     // unset $_SESSION variable for the run-time 
+                                session_destroy();   // destroy session data in storage
+                            }
+                            //--AMR20140115--
+                        }
 		}
 
 		protected static function InitializeForCli() {

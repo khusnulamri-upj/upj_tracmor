@@ -16,17 +16,17 @@
 		case 'test':
 		case 'stage':
 		case 'prod':
-			define ('__DOCROOT__', '/var/www/tracmor');
+			define ('__DOCROOT__', 'c:/xampp/htdocs');
 			define ('__VIRTUAL_DIRECTORY__', '');
-			define ('__SUBDIRECTORY__', '');
+			define ('__SUBDIRECTORY__', '/tracmor');
 
 			define('DB_CONNECTION_1', serialize(array(
 				'adapter' => 'MySqli5',
 				'server' => 'localhost',
 				'port' => null,
 				'database' => 'tracmor',
-				'username' => '',
-				'password' => '',
+				'username' => 'tracmor',
+				'password' => 'Upeje2013',
 				'profiling' => false,
 				'encoding' => 'utf8')));
 			break;
@@ -82,5 +82,10 @@
 	DEFINE('AWS_PATH', ''); 	// Path in AWS_BUCKET to store Tracmor files, including leading slash. Example: /tracmor/files
 	
 	// Location of tmp directory
-	DEFINE('__TRACMOR_TMP__', '/tmp');
+	DEFINE('__TRACMOR_TMP__', __SUBDIRECTORY__.'/tmp');
+        
+        //--AMR20140113
+        // Location of QFileFormStateHandler::FormState files
+	DEFINE('__QFileFormStateHandler_StatePath__', __DOCROOT__ . __TRACMOR_TMP__);
+        //--AMR20140113--
 ?>

@@ -588,6 +588,8 @@ class QAssetTransactComposite extends QControl {
 						$blnError = true;
 						$this->txtNewAssetCode->Warning = "That asset is reserved.";
 					}
+                                        echo "test";
+                                        exit();
 				}
 				elseif ($this->intTransactionTypeId == 8) {
 					if ($objNewAsset->ReservedFlag) {
